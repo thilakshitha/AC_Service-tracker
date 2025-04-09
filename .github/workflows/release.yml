@@ -31,7 +31,7 @@ jobs:
       - name: 🤖 Run standard-version
         run: npm run release
 
-      - name:  Push changes and tags using PAT..
+      - name:  Push changes and tags using PAT.............
         run: |
           git remote set-url origin https://github.com/thilakshitha/AC_Service-tracker.git
           git config --global credential.helper store
