@@ -10,12 +10,12 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - name: ⬇ Checkout repository
+      - name: ⬇️ Checkout repository
         uses: actions/checkout@v4
         with:
           fetch-depth: 0
 
-      - name: 🟢 Use Node.js
+      - name: 🟢 Setup Node.js
         uses: actions/setup-node@v3
         with:
           node-version: 18
@@ -23,16 +23,15 @@ jobs:
       - name: 📦 Install dependencies
         run: npm ci
 
-      - name: 👤 Configure Git author
+      - name: 👤 Configure Git
         run: |
-          git config --global user.name "github-actions[bot]"
-          git config --global user.email "github-actions[bot]@users.noreply.github.com"
+          git config --global user.name "GitHub Action"
+          git config --global user.email "action@github.com"
 
-      - name: 🤖 Run release script
+      - name: 🤖 Run standard-version
         run: npm run release
 
-      - name: ⬆️ Push changes back to GitHub
-        uses: ad-m/github-push-action@master
-        with:
-          github_token: ${{ secrets.GH_PAT }}
-          branch: main
+      - name: 🔐 Push changes and tags using PAT
+        run: |
+          git remote set-url origin https://x-access-token:${{ secrets.GH_PAT }}@github.com/${{ secrets.repository }}.git
+          git push origin main --follow-tags
