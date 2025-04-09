@@ -33,6 +33,9 @@ jobs:
 
       - name: 🔐 Push changes and tags using PAT
         run: |
-          git remote set-url origin "https://x-access-token:${{ secrets.GH_PAT }}@github.com/thilakshitha/AC_Service-tracker.git"
+          git remote set-url origin https://github.com/thilakshitha/AC_Service-tracker.git
+          git config --global credential.helper store
+          echo "https://x-access-token:${{ secrets.GH_PAT }}@github.com" > ~/.git-credentials
           git push origin main --follow-tags
+      
       
