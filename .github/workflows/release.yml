@@ -32,7 +32,7 @@ jobs:
         run: npm run release
 
       - name: ⬆️ Push changes back to GitHub
-        uses: ad-m/github-push-action@master
+        uses: ad-m/github-push-action@main
         with:
           github_token: ${{ secrets.GH_PAT }}
           branch: main
