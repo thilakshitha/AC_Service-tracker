@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.2.0](https://github.com/thilakshitha/AC_Service-tracker/compare/v1.1.0...v1.2.0) (2025-04-09)
+
+
+### Features
+
+* add auto-reminder feature123 ([353de01](https://github.com/thilakshitha/AC_Service-tracker/commit/353de01d9ff79740c4fec2969f1fe93d77fdf800))
+
 ## [1.1.0](https://github.com/thilakshitha/AC_Service-tracker/compare/v1.0.2...v1.1.0) (2025-04-09)
 
 
