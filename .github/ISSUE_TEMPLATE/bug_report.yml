@@ -1,0 +1,30 @@
+name: "🐛 Bug Report"
+description: "Report a reproducible bug or issue"
+labels: ["bug"]
+
+body:
+  - type: markdown
+    attributes:
+      value: "Thanks for reporting a bug! Please fill out the details below."
+
+  - type: input
+    id: title
+    attributes:
+      label: "Short Description"
+      placeholder: "E.g., App crashes on clicking Save"
+
+  - type: textarea
+    id: steps
+    attributes:
+      label: "Steps to Reproduce"
+      placeholder: "1. Go to Settings\n2. Click Save\n3. Crash occurs"
+
+  - type: textarea
+    id: expected
+    attributes:
+      label: "Expected Behavior"
+  
+  - type: textarea
+    id: actual
+    attributes:
+      label: "Actual Behavior"
