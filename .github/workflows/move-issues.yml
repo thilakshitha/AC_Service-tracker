@@ -6,12 +6,12 @@ on:
 
 jobs:
   move_issues:
-    runs-on: ubuntu-latest
+    runs-on: windows-latest
     steps:
       - name: Move Issue to 'To Do' Column
         uses: peter-evans/project-card@v1
         with:
-          project-url: https://github.com/thilakshitha/AC_Service-tracker/projects/1
+          project-url: https://github.com/users/thilakshitha/projects/1/views/1
 
           column-name: 'To Do'
           issue-number: ${{ github.event.issue.number }}
