@@ -56,4 +56,4 @@ Email reminders require Firebase Cloud Functions and a paid Firebase plan (Blaze
 
 ## License
 
-This project is licensed under the MIT License - see the LICENSE file for details..ssssssssss..
+This project is licensed under the MIT License - see the LICENSE file for details..ssssss

@@ -1,0 +1,17 @@
+name: Move Issues to Project
+
+on:
+  issues:
+    types: [opened, edited, labeled]
+
+jobs:
+  move_issues:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Move Issue to 'To Do' Column
+        uses: peter-evans/project-card@v1
+        with:
+          project-url: https://github.com/thilakshitha/AC_Service-tracker/projects/1
+
+          column-name: 'To Do'
+          issue-number: ${{ github.event.issue.number }}
