@@ -1,17 +1,15 @@
-name: Move Issues to Project
+name: Auto Add Issue to Project
 
 on:
   issues:
-    types: [opened, edited, labeled]
+    types: [opened]
 
 jobs:
-  move_issues:
-    runs-on: windows-latest
+  add-to-project:
+    runs-on: ubuntu-latest
     steps:
-      - name: Move Issue to 'To Do' Column
-        uses: peter-evans/project-card@v1
+      - name: Add issue to GitHub project
+        uses: actions/add-to-project@v1
         with:
-          project-url: https://github.com/users/thilakshitha/projects/1/views/1
-
-          column-name: 'To Do'
-          issue-number: ${{ github.event.issue.number }}
+          project-url: https://github.com/orgs/YOUR_ORG/projects/1
+          github-token: ${{ secrets.GH_TOKEN }}
