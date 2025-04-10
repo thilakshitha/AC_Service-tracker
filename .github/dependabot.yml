@@ -1,0 +1,9 @@
+version: 2
+updates:
+  - package-ecosystem: "npm" # or "maven", "pip", etc.
+    directory: "/" # location of package manifest
+    schedule:
+      interval: "weekly" # or "daily", "monthly"
+    open-pull-requests-limit: 5
+    allow:
+      - dependency-type: "direct"
