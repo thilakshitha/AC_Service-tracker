@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.3.0](https://github.com/thilakshitha/AC_Service-tracker/compare/v1.2.4...v1.3.0) (2025-04-10)
+
+
+### Features
+
+* implement user reminder interval selection ([2e66621](https://github.com/thilakshitha/AC_Service-tracker/commit/2e666216af882dbdf94c0b45b5719e8e6abee875))
+
 ### [1.2.4](https://github.com/thilakshitha/AC_Service-tracker/compare/v1.2.3...v1.2.4) (2025-04-10)
 
 ### [1.2.3](https://github.com/thilakshitha/AC_Service-tracker/compare/v1.2.2...v1.2.3) (2025-04-10)
