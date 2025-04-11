@@ -10,7 +10,8 @@
     "check": "tsc",
     "db:push": "drizzle-kit push",
     "prepare": "husky install",
-    "release": "standard-version"
+    "release": "standard-version",
+    "test": "vitest run"
   },
   "dependencies": {
     "@emailjs/browser": "^4.4.1",
@@ -76,6 +77,7 @@
     "tailwind-merge": "^2.5.4",
     "tailwindcss-animate": "^1.0.7",
     "vaul": "^1.1.0",
+    "vitest": "^3.1.1",
     "wouter": "^3.3.5",
     "ws": "^8.18.0",
     "zod": "^3.23.8",
