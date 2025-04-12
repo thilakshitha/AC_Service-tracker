@@ -10,36 +10,42 @@ jobs:
   unit-tests:
     name: Unit Tests
     runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: client
     steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-node@v4
+      - uses: actions/checkout@v3
+      - uses: actions/setup-node@v3
         with:
-          node-version: 20.x
-          cache: 'npm'
+          node-version: 18
       - run: npm ci
-      - run: npm run test:unit
+      - run: npx vitest run --dir tests/unit
 
   integration-tests:
     name: Integration Tests
     runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: client
     steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-node@v4
+      - uses: actions/checkout@v3
+      - uses: actions/setup-node@v3
         with:
-          node-version: 20.x
-          cache: 'npm'
+          node-version: 18
       - run: npm ci
-      - run: npm run test:integration
+      - run: npx vitest run --dir tests/integration
 
   e2e-tests:
-    name: End-to-End Tests
+    name: E2E Tests
     runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: client
     steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-node@v4
+      - uses: actions/checkout@v3
+      - uses: actions/setup-node@v3
         with:
-          node-version: 20.x
-          cache: 'npm'
+          node-version: 18
       - run: npm ci
       - run: npx playwright install
-      - run: npm run test:e2e
+      - run: npx playwright test # or npx cypress run if using Cypress
