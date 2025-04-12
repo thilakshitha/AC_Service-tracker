@@ -1,5 +1,8 @@
-import { expect, test } from 'vitest'
+// client/tests/unit/math.test.ts
+import { describe, it, expect } from 'vitest'
 
-test('basic math', () => {
-  expect(1 + 1).toBe(2)
+describe('Math Unit Test', () => {
+  it('adds two numbers', () => {
+    expect(1 + 2).toBe(3)
+  })
 })
