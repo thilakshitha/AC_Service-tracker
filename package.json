@@ -11,10 +11,9 @@
     "db:push": "drizzle-kit push",
     "prepare": "husky install",
     "release": "standard-version",
-    
     "test:unit": "vitest run --dir tests/unit",
     "test:integration": "vitest run --dir tests/integration",
-    "test:e2e": "playwright test" 
+    "test:e2e": "playwright test"
   },
   "dependencies": {
     "@emailjs/browser": "^4.4.1",
@@ -80,7 +79,6 @@
     "tailwind-merge": "^2.5.4",
     "tailwindcss-animate": "^1.0.7",
     "vaul": "^1.1.0",
-    "vitest": "^3.1.1",
     "wouter": "^3.3.5",
     "ws": "^8.18.0",
     "zod": "^3.23.8",
@@ -111,7 +109,8 @@
     "tailwindcss": "^3.4.14",
     "tsx": "^4.19.1",
     "typescript": "5.6.3",
-    "vite": "^5.4.14"
+    "vite": "^5.4.14",
+    "vitest": "^3.1.1"
   },
   "optionalDependencies": {
     "bufferutil": "^4.0.8"
