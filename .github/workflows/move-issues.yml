@@ -9,7 +9,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Add issue to GitHub project
-        uses: github/add-to-project@v1.0.1
+        uses: actions/github-script@v6
         with:
-          project-url: https://github.com/orgs/YOUR_ORG/projects/1
+          project-url: https://github.com/users/thilakshitha/projects/2
           github-token: ${{ secrets.GH_PAT }}
