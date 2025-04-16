@@ -1,6 +1,6 @@
 {
     "rewrites": [
-      { "source": "/(.*)", "destination": "/ACServiceTracker11-main/dist/public/index.html" }
+      { "source": "/(.*)", "destination": "index.html" }
     ]
   }
   
