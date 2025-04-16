@@ -1,0 +1,143 @@
+name: Node.js Matrix Testing
+
+on:
+  push:
+    branches: [ main, development ]
+  pull_request:
+    branches: [ main, development ]
+  # Run weekly to catch compatibility issues with new Node.js versions
+  schedule:
+    - cron: '0 0 * * 0'  # Run at midnight every Sunday
+  # Allow manual triggering
+  workflow_dispatch:
+
+jobs:
+  test:
+    name: Test on Node.js ${{ matrix.node-version }}
+    runs-on: ubuntu-latest
+
+    strategy:
+      fail-fast: false  # Continue with other versions even if one fails
+      matrix:
+        node-version: [18.x, 20.x, 22.x]
+
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js ${{ matrix.node-version }}
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ matrix.node-version }}
+          cache: 'npm'
+
+      - name: Start MongoDB
+        uses: supercharge/mongodb-github-action@1.10.0
+        with:
+          mongodb-version: '6.0'
+          mongodb-port: 27017
+
+      - name: Install Dependencies
+        run: |
+          # Install dependencies and run our custom install script
+          npm install
+          npm run install-deps
+
+          # Install specific versions of dependencies for Node.js compatibility
+          if [[ "${{ matrix.node-version }}" != "18.x" ]]; then
+            # For Node.js 20+ we need to ensure compatible versions
+            cd server
+            npm install --no-save jest@29.7.0 supertest@6.3.3
+            cd ../client
+            npm install --no-save --legacy-peer-deps webpack@4.42.0 webpack-cli@4.10.0
+            cd ..
+          fi
+
+      - name: Apply Security Fixes
+        run: |
+          # Use our custom script to apply security fixes
+          npm run apply-security-fixes
+
+      - name: Run Server Tests
+        env:
+          CI: true
+          NODE_ENV: test
+          MONGODB_URI: mongodb://localhost:27017/test
+          AI_API_KEY: dummy-key
+          OPENAI_API_KEY: dummy-key
+        run: |
+          # Create a mock mongoose connection for tests
+          mkdir -p server/mocks
+          echo "module.exports = { connect: jest.fn(), connection: { on: jest.fn() } };" > server/mocks/mongoose.js
+          # Run the server tests
+          npm run test:server
+
+      - name: Run Client Tests
+        env:
+          CI: true
+          REACT_APP_GEMINI_API_KEY: dummy-key
+          SKIP_PREFLIGHT_CHECK: true
+        run: |
+          # Use our custom test runner which works with all Node.js versions
+          npm run test:client
+
+      - name: Build Project
+        env:
+          CI: true
+          NODE_ENV: production
+          SKIP_PREFLIGHT_CHECK: true
+        run: |
+          # Use our custom build script which works with all Node.js versions
+          npm run build
+
+      - name: Report Node.js Version Status
+        if: always()
+        run: |
+          echo "Node.js ${{ matrix.node-version }} test status: ${{ job.status }}"
+
+  report:
+    name: Generate Compatibility Report
+    needs: test
+    runs-on: ubuntu-latest
+    if: always()
+
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+
+      - name: Create Compatibility Report
+        run: |
+          echo "# Node.js Compatibility Report" > node-compatibility-report.md
+          echo "Generated on $(date)" >> node-compatibility-report.md
+          echo "" >> node-compatibility-report.md
+          echo "| Node.js Version | Status | Build | Client Tests | Server Tests |" >> node-compatibility-report.md
+          echo "|----------------|--------|-------|--------------|-------------|" >> node-compatibility-report.md
+
+          # Get job status for each Node.js version
+          status="${{ needs.test.result }}"
+
+          # Create detailed report
+          if [ "$status" == "success" ]; then
+            echo "| 18.x | ✅ Compatible | ✅ | ✅ | ✅ |" >> node-compatibility-report.md
+            echo "| 20.x | ✅ Compatible | ✅ | ✅ | ✅ |" >> node-compatibility-report.md
+            echo "| 22.x | ✅ Compatible | ✅ | ✅ | ✅ |" >> node-compatibility-report.md
+          else
+            echo "| 18.x | ⚠️ Issues detected | ❓ | ❓ | ❓ |" >> node-compatibility-report.md
+            echo "| 20.x | ⚠️ Issues detected | ❓ | ❓ | ❓ |" >> node-compatibility-report.md
+            echo "| 22.x | ⚠️ Issues detected | ❓ | ❓ | ❓ |" >> node-compatibility-report.md
+          fi
+
+          echo "" >> node-compatibility-report.md
+          echo "## Notes" >> node-compatibility-report.md
+          echo "" >> node-compatibility-report.md
+          echo "- Node.js 18.x is the primary supported version" >> node-compatibility-report.md
+          echo "- Node.js 20.x and 22.x require the --openssl-legacy-provider flag for client builds" >> node-compatibility-report.md
+          echo "- Custom build and test scripts are used to ensure compatibility across all Node.js versions" >> node-compatibility-report.md
+          echo "- The client uses React 16.8.6 with React Scripts 3.0.1 for maximum compatibility" >> node-compatibility-report.md
+
+      - name: Upload Compatibility Report
+        uses: actions/upload-artifact@v4
+        with:
+          name: node-compatibility-report
+          path: node-compatibility-report.md
+          retention-days: 90
