@@ -11,7 +11,10 @@
     "db:push": "drizzle-kit push",
     "prepare": "husky install",
     "release": "standard-version",
-    "test:e2e": "playwright test"
+    "test:e2e": "playwright test",
+    "test:unit": "jest tests/unit",
+    "test:integration": "jest tests/integration"
+    
   },
   "dependencies": {
     "@emailjs/browser": "^4.4.1",
