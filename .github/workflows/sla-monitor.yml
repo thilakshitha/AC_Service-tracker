@@ -1,0 +1,36 @@
+name: SLA Monitor
+
+on:
+  schedule:
+    - cron: '0 * * * *'  # runs every hour
+
+jobs:
+  sla-check:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/github-script@v6
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          script: |
+            const issues = await github.rest.issues.listForRepo({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              state: 'open',
+              labels: 'priority: high'
+            });
+
+            const now = new Date();
+
+            for (const issue of issues.data) {
+              const created = new Date(issue.created_at);
+              const hoursOpen = (now - created) / (1000 * 60 * 60);
+
+              if (hoursOpen > 48) {
+                await github.rest.issues.addLabels({
+                  owner: context.repo.owner,
+                  repo: context.repo.repo,
+                  issue_number: issue.number,
+                  labels: ['sla: breached']
+                });
+              }
+            }
