@@ -16,7 +16,14 @@
     "test:integration": "jest tests/integration",
     "test:unit": "vitest run tests/unit",
     "test:integration": "vitest run tests/integration",
+    "test:e2e": "vitest run tests/e2e",
+    "dev": "vite",
+    "build": "vite build",
+    "preview": "vite preview",
+    "test:unit": "vitest run tests/unit",
+    "test:integration": "vitest run tests/integration",
     "test:e2e": "vitest run tests/e2e"
+    
   },
   "dependencies": {
     "@emailjs/browser": "^4.4.1",
