@@ -14,8 +14,8 @@ try {
   console.log('🌐 Navigating to login page...');
   await page.goto('https://your-app-url.com/login', { waitUntil: 'networkidle2' });
 
-  // Add a delay to ensure the page loads properly
-  await page.waitForTimeout(500); // Optional: Increase delay for slower pages
+  // Add a delay by waiting for a specific element to appear or by using a simple wait
+  await page.waitFor(2000);  // This waits for 2 seconds (alternative to waitForTimeout)
 
   // Log the page content to check if the form is available
   const content = await page.content();
