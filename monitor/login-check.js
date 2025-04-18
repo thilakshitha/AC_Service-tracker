@@ -13,14 +13,14 @@ try {
   await page.waitForNavigation({ waitUntil: 'networkidle2' });
 
   if (page.url().includes('/dashboard')) {
-    console.log('✅ Login flow works');
+    console.log(' Login flow works');
     process.exit(0);
   } else {
-    throw new Error('🚨 Login failed or wrong redirect');
+    throw new Error('🚨Login failed or wrong redirect');
   }
 
 } catch (err) {
-  console.error('❌ Synthetic monitoring failed:', err.message);
+  console.error(' Synthetic monitoring failed:', err.message);
   process.exit(1);
 } finally {
   await browser.close();
