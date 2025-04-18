@@ -8,14 +8,24 @@ const browser = await puppeteer.launch({
   args: ['--no-sandbox', '--disable-setuid-sandbox']
 });
 
-const page = await browser.newPage();  // Create a new page directly (no incognito context)
+const page = await browser.newPage();
 
 try {
   console.log('🌐 Navigating to login page...');
   await page.goto('https://your-app-url.com/login', { waitUntil: 'networkidle2' });
 
+  // Add a delay to ensure the page loads properly
+  await page.waitForTimeout(2000); // Optional: Increase delay for slower pages
+
+  // Log the page content to check if the form is available
+  const content = await page.content();
+  console.log('📄 Page HTML:\n', content);
+
   console.log('⏳ Waiting for login form...');
-  await page.waitForSelector('input[type="email"]', { timeout: 10000 });
+  await page.waitForFunction(
+    'document.querySelector("input[type=\'email\']") !== null',
+    { timeout: 30000 }
+  );
 
   await page.type('input[type="email"]', email);
   await page.type('input[type="password"]', password);
