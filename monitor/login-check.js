@@ -6,8 +6,8 @@ const page = await browser.newPage();
 try {
   await page.goto('https://yourapp.com/login', { waitUntil: 'networkidle2' });
 
-  await page.type('#username', 'testuser');
-  await page.type('#password', 'securepassword');
+  await page.type('#email', 'thilakshithapriyangana2001@gmail.com');
+  await page.type('#password', '123456');
   await page.click('#login-button');
 
   await page.waitForNavigation({ waitUntil: 'networkidle2' });
