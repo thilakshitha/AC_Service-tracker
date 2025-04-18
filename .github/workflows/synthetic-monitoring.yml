@@ -1,9 +1,10 @@
 name: Synthetic Monitoring - Login Flow
 
 on:
-  schedule:
-    - cron: '*/15 * * * *' # Every 15 minutes
-  workflow_dispatch:       # Allow manual trigger from GitHub UI
+  push:
+    branches:
+      - main
+  workflow_dispatch:
 
 jobs:
   monitor-login:
@@ -23,3 +24,4 @@ jobs:
 
       - name: Run Login Flow Monitoring Script
         run: node monitor/login-check.js
+
