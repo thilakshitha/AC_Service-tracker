@@ -39,7 +39,7 @@ try {
   console.log('📍 Redirected to:', currentURL);
 
   if (currentURL.includes('/dashboard') || currentURL.includes('/reminders')) {
-    console.log('✅ Synthetic monitoring: Login successful and dashboard reached');
+    console.log(' Synthetic monitoring: Login successful and dashboard reached');
     process.exit(0);
   } else {
     throw new Error('🚨 Login failed or unexpected redirect');
