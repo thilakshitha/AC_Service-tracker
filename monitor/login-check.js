@@ -8,12 +8,11 @@ const browser = await puppeteer.launch({
   args: ['--no-sandbox', '--disable-setuid-sandbox']
 });
 
-const context = await browser.createIncognitoBrowserContext();
-const page = await context.newPage();
+const page = await browser.newPage();  // Create a new page directly (no incognito context)
 
 try {
   console.log('🌐 Navigating to login page...');
-  await page.goto('https://ac-service-tracker.vercel.app/login', { waitUntil: 'networkidle2' });
+  await page.goto('https://your-app-url.com/login', { waitUntil: 'networkidle2' });
 
   console.log('⏳ Waiting for login form...');
   await page.waitForSelector('input[type="email"]', { timeout: 10000 });
