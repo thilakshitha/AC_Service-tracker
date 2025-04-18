@@ -1,53 +1,18 @@
-import puppeteer from 'puppeteer';
+import http from 'k6/http';
+import { check, sleep } from 'k6';
 
-const email = process.env.TEST_EMAIL;
-const password = process.env.TEST_PASSWORD;
+export const options = {
+  vus: 1, // number of virtual users
+  iterations: 1, // run once
+};
 
-const browser = await puppeteer.launch({
-  headless: true,
-  args: ['--no-sandbox', '--disable-setuid-sandbox']
-});
+export default function () {
+  const res = http.get('https://ac-service-tracker.vercel.app/login'); // 🔁 Replace with your login page URL
 
-const page = await browser.newPage();
+  check(res, {
+    '✅ status is 200': (r) => r.status === 200,
+    '✅ page contains "Login"': (r) => r.body.includes('Login'),
+  });
 
-try {
-  console.log('🌐 Navigating to login page...');
-  await page.goto('https://your-app-url.com/login', { waitUntil: 'networkidle2' });
-
-  // Add a delay by waiting for a specific element to appear or by using a simple wait
-  await page.waitFor(2000);  // This waits for 2 seconds (alternative to waitForTimeout)
-
-  // Log the page content to check if the form is available
-  const content = await page.content();
-  console.log('📄 Page HTML:\n', content);
-
-  console.log('⏳ Waiting for login form...');
-  await page.waitForFunction(
-    'document.querySelector("input[type=\'email\']") !== null',
-    { timeout: 30000 }
-  );
-
-  await page.type('input[type="email"]', email);
-  await page.type('input[type="password"]', password);
-
-  console.log('🔐 Submitting login form...');
-  await page.click('button[type="submit"]');
-
-  await page.waitForNavigation({ waitUntil: 'networkidle2' });
-
-  const currentURL = page.url();
-  console.log('📍 Redirected to:', currentURL);
-
-  if (currentURL.includes('/dashboard') || currentURL.includes('/reminders')) {
-    console.log(' Synthetic monitoring: Login successful and dashboard reached');
-    process.exit(0);
-  } else {
-    throw new Error('🚨 Login failed or unexpected redirect');
-  }
-
-} catch (err) {
-  console.error('❌ Synthetic monitoring failed:', err.message);
-  process.exit(1);
-} finally {
-  await browser.close();
+  sleep(1); // optional: wait for 1 second
 }
