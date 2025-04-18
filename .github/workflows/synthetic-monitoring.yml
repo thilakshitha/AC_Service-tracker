@@ -1,4 +1,4 @@
-name: Synthetic Monitoring - Login Flow
+name: Synthetic Monitoring
 
 on:
   push:
@@ -7,11 +7,11 @@ on:
   workflow_dispatch:
 
 jobs:
-  monitor-login:
+  monitor:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout Code
+      - name: Checkout code
         uses: actions/checkout@v3
 
       - name: Set up Node.js
@@ -19,9 +19,11 @@ jobs:
         with:
           node-version: '18'
 
-      - name: Install Dependencies
+      - name: Install dependencies
         run: npm install puppeteer
 
-      - name: Run Login Flow Monitoring Script
+      - name: Run synthetic monitoring script
+        env:
+          TEST_EMAIL: ${{ secrets.TEST_EMAIL }}
+          TEST_PASSWORD: ${{ secrets.TEST_PASSWORD }}
         run: node monitor/login-check.js
-

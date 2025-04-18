@@ -1,26 +1,43 @@
 import puppeteer from 'puppeteer';
 
-const browser = await puppeteer.launch({ args: ['--no-sandbox'] });
-const page = await browser.newPage();
+const email = process.env.TEST_EMAIL;
+const password = process.env.TEST_PASSWORD;
+
+const browser = await puppeteer.launch({
+  headless: true,
+  args: ['--no-sandbox', '--disable-setuid-sandbox']
+});
+
+const context = await browser.createIncognitoBrowserContext();
+const page = await context.newPage();
 
 try {
-  await page.goto('https://yourapp.com/login', { waitUntil: 'networkidle2' });
+  console.log('🌐 Navigating to login page...');
+  await page.goto('https://ac-service-tracker.vercel.app/login', { waitUntil: 'networkidle2' });
 
-  await page.type('#email', 'thilakshithapriyangana2001@gmail.com');
-  await page.type('#password', '123456');
-  await page.click('#login-button');
+  console.log('⏳ Waiting for login form...');
+  await page.waitForSelector('input[type="email"]', { timeout: 10000 });
+
+  await page.type('input[type="email"]', email);
+  await page.type('input[type="password"]', password);
+
+  console.log('🔐 Submitting login form...');
+  await page.click('button[type="submit"]');
 
   await page.waitForNavigation({ waitUntil: 'networkidle2' });
 
-  if (page.url().includes('/dashboard')) {
-    console.log(' Login flow works');
+  const currentURL = page.url();
+  console.log('📍 Redirected to:', currentURL);
+
+  if (currentURL.includes('/dashboard') || currentURL.includes('/reminders')) {
+    console.log('✅ Synthetic monitoring: Login successful and dashboard reached');
     process.exit(0);
   } else {
-    throw new Error('🚨Login failed or wrong redirect');
+    throw new Error('🚨 Login failed or unexpected redirect');
   }
 
 } catch (err) {
-  console.error(' Synthetic monitoring failed:', err.message);
+  console.error('❌ Synthetic monitoring failed:', err.message);
   process.exit(1);
 } finally {
   await browser.close();
