@@ -1,0 +1,25 @@
+name: Synthetic Monitoring - Login Flow
+
+on:
+  schedule:
+    - cron: '*/15 * * * *' # Every 15 minutes
+  workflow_dispatch:       # Allow manual trigger from GitHub UI
+
+jobs:
+  monitor-login:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v3
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '18'
+
+      - name: Install Dependencies
+        run: npm install puppeteer
+
+      - name: Run Login Flow Monitoring Script
+        run: node monitor/login-check.js
